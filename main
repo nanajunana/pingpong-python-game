@@ -1,0 +1,44 @@
+import time
+from turtle import Screen
+from scoreboard import ScoreBoard
+from player import Player
+from ball import Ball
+
+screen = Screen()
+screen.setup(width=600, height=600)
+screen.bgcolor('black')
+screen.title("PingPong")
+screen.tracer(0)
+screen.listen()
+game = True
+
+scoreboard = ScoreBoard()
+player = Player()
+ball = Ball()
+screen.update()
+
+screen.onkey(fun=player.move_up,key='w')
+screen.onkey(fun=player.move_down,key='s')
+screen.onkey(fun=player.move_up2,key='Up')
+screen.onkey(fun=player.move_down2,key='Down')
+
+ball.begin()
+while game:
+    screen.update()
+    time.sleep(0.1)
+    ball.move()
+    for items in player.player_1:
+        if ball.distance(items) < 15:
+            ball.bounce()
+    for items in player.player_2:
+        if ball.distance(items) < 15:
+            ball.bounce()
+
+    if ball.xcor() > 280:
+        scoreboard.increase_player_score(1)
+        ball.restart()
+    if ball.xcor() < -280:
+        scoreboard.increase_player_score(2)
+        ball.restart()
+
+screen.exitonclick()
