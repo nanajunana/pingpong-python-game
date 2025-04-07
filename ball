@@ -10,20 +10,17 @@ class Ball(Turtle):
         self.color('white')
         self.shapesize(stretch_wid=0.5,stretch_len=0.5)
         self.goto(0,0)
-
-    def begin(self):
-        start = random.randint(0,1)
-        if start == 0:
-            self.setheading(180)
-        else:
-            self.setheading(0)
+        self.increase_y = 10
+        self.increase_x = 10
 
     def move(self):
-        self.forward(20)
+        self.goto(self.xcor()+self.increase_x, self.ycor()+self.increase_y)
 
     def bounce(self):
-        self.left(180)
+        self.increase_x = self.increase_x*-1
+
+    def reflect(self):
+        self.increase_y = self.increase_y*-1
 
     def restart(self):
         self.goto(0,0)
-        self.begin()
