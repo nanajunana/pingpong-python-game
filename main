@@ -13,31 +13,38 @@ screen.listen()
 game = True
 
 scoreboard = ScoreBoard()
-player = Player()
+player1 = Player((-250, 0))
+player2 = Player((250, 0))
 ball = Ball()
 screen.update()
 
-screen.onkey(fun=player.move_up,key='w')
-screen.onkey(fun=player.move_down,key='s')
-screen.onkey(fun=player.move_up2,key='Up')
-screen.onkey(fun=player.move_down2,key='Down')
+screen.onkey(fun=player1.move_up,key='w')
+screen.onkey(fun=player1.move_down,key='s')
+screen.onkey(fun=player2.move_up,key='Up')
+screen.onkey(fun=player2.move_down,key='Down')
 
-ball.begin()
+
 while game:
     screen.update()
     time.sleep(0.1)
     ball.move()
-    for items in player.player_1:
-        if ball.distance(items) < 15:
-            ball.bounce()
-    for items in player.player_2:
-        if ball.distance(items) < 15:
-            ball.bounce()
+    if ball.distance(player1) < 20:
+        ball.bounce()
+    elif ball.distance(player1) < 70 and ball.xcor() < -220:
+        ball.bounce()
 
-    if ball.xcor() > 280:
+    if ball.distance(player2) < 20:
+        ball.bounce()
+    elif ball.distance(player2) < 70 and ball.xcor() > 220:
+        ball.bounce()
+
+    if ball.ycor() > 280 or ball.ycor() < -280:
+        ball.reflect()
+
+    if ball.xcor() > 300:
         scoreboard.increase_player_score(1)
         ball.restart()
-    if ball.xcor() < -280:
+    if ball.xcor() < -300:
         scoreboard.increase_player_score(2)
         ball.restart()
 
